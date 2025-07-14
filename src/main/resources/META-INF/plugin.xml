@@ -26,10 +26,8 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-        <psi.referenceContributor language="SpEL" factoryClass="io.github.vudsen.spelth.MySpELReferenceContributor">
-
-        </psi.referenceContributor>
-
+        <psi.referenceContributor language="SpEL" implementation="io.github.vudsen.spelth.MySpELReferenceContributor"/>
+        <completion.contributor language="SpEL" implementationClass="io.github.vudsen.spelth.MySpELCompletionContributor"/>
     </extensions>
 
 </idea-plugin>
