@@ -22,12 +22,15 @@
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.spring</depends>
+    <depends>com.intellij.javaee.el</depends>
 
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-        <psi.referenceContributor language="SpEL" implementation="io.github.vudsen.spelth.MySpELReferenceContributor"/>
-        <completion.contributor language="SpEL" implementationClass="io.github.vudsen.spelth.MySpELCompletionContributor"/>
+<!--        <psi.referenceContributor language="SpEL" implementation="io.github.vudsen.spelth.MySpELReferenceContributor"/>-->
+<!--        <completion.contributor language="SpEL" implementationClass="io.github.vudsen.spelth.MySpELCompletionContributor"/>-->
+        <javaee.el.implicitVariablesProvider implementation="io.github.vudsen.spelth.MySpELVariableProvider"/>
+        <customJavadocTagProvider implementation="io.github.vudsen.spelth.SpELJavaDocTagProvider"/>
     </extensions>
 
 </idea-plugin>
