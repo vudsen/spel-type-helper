@@ -1,8 +1,7 @@
-package io.github.vudsen.spelth
+package io.github.vudsen.spelth.tag
 
 import com.intellij.psi.javadoc.CustomJavadocTagProvider
 import com.intellij.psi.javadoc.JavadocTagInfo
-import io.github.vudsen.spelth.tag.SpELOptionsTag
 
 class SpELJavaDocTagProvider : CustomJavadocTagProvider {
 

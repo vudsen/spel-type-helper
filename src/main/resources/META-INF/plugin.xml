@@ -29,8 +29,8 @@
     <extensions defaultExtensionNs="com.intellij">
 <!--        <psi.referenceContributor language="SpEL" implementation="io.github.vudsen.spelth.MySpELReferenceContributor"/>-->
 <!--        <completion.contributor language="SpEL" implementationClass="io.github.vudsen.spelth.MySpELCompletionContributor"/>-->
-        <javaee.el.implicitVariablesProvider implementation="io.github.vudsen.spelth.MySpELVariableProvider"/>
-        <customJavadocTagProvider implementation="io.github.vudsen.spelth.SpELJavaDocTagProvider"/>
+        <customJavadocTagProvider implementation="io.github.vudsen.spelth.tag.SpELJavaDocTagProvider"/>
+        <spring.el.contexts implementation="io.github.vudsen.spelth.MySpringElContextsExtension"/>
     </extensions>
 
 </idea-plugin>
