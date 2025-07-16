@@ -10,7 +10,14 @@ plugins {
 }
 
 group = "io.github.vudsen.spelth"
-version = "1.0-SNAPSHOT"
+
+val sha = providers.environmentVariable("HEAD_SHA").orNull
+if (sha == null || sha.isEmpty()) {
+    version = providers.gradleProperty("pluginVersion").get()
+} else {
+    version = providers.gradleProperty("pluginVersion").get() + "-$sha"
+}
+
 
 repositories {
     maven{ url=uri("https://maven.aliyun.com/repository/public") }
