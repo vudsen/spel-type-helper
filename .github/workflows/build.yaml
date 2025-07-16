@@ -22,8 +22,6 @@ jobs:
       # Check out the current repository
       - name: Fetch Sources
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GH_PAT }}
 
       # Validate wrapper
       - name: Gradle Wrapper Validation
@@ -89,8 +87,6 @@ jobs:
       # Check out the current repository
       - name: Fetch Sources
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GH_PAT }}
 
       # Set up Java environment for the next steps
       - name: Setup Java
