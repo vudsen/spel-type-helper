@@ -10,7 +10,14 @@ plugins {
 }
 
 group = "io.github.vudsen.spelth"
-version = "1.0-SNAPSHOT"
+
+val sha = providers.environmentVariable("HEAD_SHA").orNull
+if (sha == null || sha.isEmpty()) {
+    version = providers.gradleProperty("pluginVersion").get()
+} else {
+    version = providers.gradleProperty("pluginVersion").get() + "-$sha"
+}
+
 
 repositories {
     maven{ url=uri("https://maven.aliyun.com/repository/public") }
@@ -36,7 +43,7 @@ intellijPlatform {
         }
 
         // Extract the <!-- Plugin description --> section from README.md and provide for the plugin's manifest
-        description = providers.fileContents(layout.projectDirectory.file("../README.md")).asText.map {
+        description = providers.fileContents(layout.projectDirectory.file("./README.md")).asText.map {
             val start = "<!-- Plugin description -->"
             val end = "<!-- Plugin description end -->"
 
@@ -46,6 +53,25 @@ intellijPlatform {
                 }
                 subList(indexOf(start) + 1, indexOf(end)).joinToString("\n").let(::markdownToHTML)
             }
+        }
+    }
+
+
+    publishing {
+        token = providers.environmentVariable("PUBLISH_TOKEN")
+        // The pluginVersion is based on the SemVer (https://semver.org) and supports pre-release labels, like 2.1.7-alpha.3
+        // Specify pre-release label to publish the plugin in a custom Release Channel automatically. Read more:
+        // https://plugins.jetbrains.com/docs/intellij/deployment.html#specifying-a-release-channel
+        channels = providers.gradleProperty("pluginVersion").map { listOf(it.substringAfter('-', "").substringBefore('.').ifEmpty { "default" }) }
+    }
+
+    pluginVerification {
+        ides {
+            val productReleases = ProductReleasesValueSource().get()
+            val reducedProductReleases =
+                if (productReleases.size > 2) listOf(productReleases.first(), productReleases.last())
+                else productReleases
+            ides(reducedProductReleases)
         }
     }
 

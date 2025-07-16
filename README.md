@@ -1,8 +1,10 @@
 # spel-type-helper
 
-Inject custom variable to your SpEL context.
-
 ![Usage](image/usage.png)
+
+<!-- Plugin description -->
+
+Inject custom variable to your SpEL context.
 
 # Quick Start
 
@@ -40,3 +42,5 @@ public @interface MyAnno {
 
 > [!IMPORTANT]  
 > The class must be qualified name, such as `java.lang.String`, not `String`.
+
+<!-- Plugin description end -->
