@@ -67,7 +67,6 @@ jobs:
         uses: actions/upload-artifact@v4
         id: pluginUpload
         with:
-          name: ${{ steps.artifact.outputs.filename }}
           path: ./build/distributions/${{ steps.artifact.outputs.filename }}.zip
 
   verify:
