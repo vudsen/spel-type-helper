@@ -19,7 +19,7 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-        <customJavadocTagProvider implementation="io.github.vudsen.spelth.tag.SpELJavaDocTagProvider"/>
+        <customJavadocTagProvider implementation="io.github.vudsen.spelth.options.SpELJavaDocTagProvider"/>
         <spring.el.contexts implementation="io.github.vudsen.spelth.MySpringElContextsExtension"/>
     </extensions>
 
