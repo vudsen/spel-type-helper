@@ -52,24 +52,17 @@ class SpELHelperOptionsManager {
             }
             val option = tag.valueElement?.text ?: continue
             val helperOption = optionMap[option] ?: continue
-            val validateResult = validateTag(tag)
-            if (validateResult.first != null) {
+            if (tag.dataElements.size < 2) {
                 continue
             }
-            result.addAll(helperOption.resolveContextVariables(validateResult.second!!, context))
+            val args = helperOption.parseArgument(tag.dataElements[1].text)
+            if (helperOption.validate(args) != null) {
+                continue
+            }
+            result.addAll(helperOption.resolveContextVariables(args, context))
         }
         cache[docComment] = CacheEntry(docComment.text.hashCode(), result)
         return result
-    }
-
-    private fun validateTag(tag: PsiDocTag): Pair<String?, List<String>?> {
-        val option = tag.valueElement?.text ?: return Pair("Option name expected", null)
-        val helperOption = optionMap[option] ?: return Pair("Unknown Option", null)
-        if (tag.dataElements.size < 2) {
-            return Pair("Unknown Error(#1)", null)
-        }
-        val args = splitWithWhiteSpace(tag.dataElements[1].text)
-        return Pair(helperOption.validate(args), args)
     }
 
     @Nls
@@ -78,33 +71,13 @@ class SpELHelperOptionsManager {
         if (tag !is PsiDocTag) {
             return "Unknown Error(#2)"
         }
-        validateTag(tag)
-        val sp = splitWithWhiteSpace(value.text)
-        if (sp.isEmpty()) {
-            return "Option name expected"
+        val option = tag.valueElement?.text ?: return "Option name expected"
+        val helperOption = optionMap[option] ?: return "Unknown Option"
+        if (tag.dataElements.size < 2) {
+            return "Unknown Error(#1)"
         }
-        val helperOption = optionMap[sp[0]] ?: return "Unknown option"
-        return helperOption.validate(sp.subList(1, sp.size))
+        return helperOption.validate(helperOption.parseArgument(tag.dataElements[1].text))
     }
 
-    private fun splitWithWhiteSpace(text: String): List<String> {
-        val result = mutableListOf<String>()
-        val builder = StringBuilder()
-        for (element in text) {
-            val c = element
-            if (c == ' ') {
-                if (builder.isNotEmpty()) {
-                    result.add(builder.toString())
-                } else {
-                    builder.clear()
-                }
-            } else {
-                builder.append(c)
-            }
-        }
-        if (builder.isNotEmpty()) {
-            result.add(builder.toString())
-        }
-        return result
-    }
+
 }

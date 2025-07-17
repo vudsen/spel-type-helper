@@ -19,5 +19,27 @@ interface SpELTypeHelperOption {
      */
     fun resolveContextVariables(args: List<String>, context: VariableResolveContext): List<PsiVariable>
 
+    /**
+     * 解析参数
+     */
+    fun parseArgument(raw: String): List<String> {
+        val result = mutableListOf<String>()
+        val builder = StringBuilder()
+        for (element in raw) {
+            val c = element
+            if (c == ' ') {
+                if (builder.isNotEmpty()) {
+                    result.add(builder.toString())
+                }
+                builder.clear()
+            } else {
+                builder.append(c)
+            }
+        }
+        if (builder.isNotEmpty()) {
+            result.add(builder.toString())
+        }
+        return result
+    }
 
 }

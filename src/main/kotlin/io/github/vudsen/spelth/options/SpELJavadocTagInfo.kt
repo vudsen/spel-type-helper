@@ -18,7 +18,6 @@ class SpELJavadocTagInfo(manager: SpELHelperOptionsManager) : JavadocTagInfo {
     }
 
     override fun isValidInContext(element: PsiElement?): Boolean {
-        // TODO ensure under PsiAnnotationMethod
         return element is PsiAnnotationMethod
     }
 
@@ -27,7 +26,7 @@ class SpELJavadocTagInfo(manager: SpELHelperOptionsManager) : JavadocTagInfo {
         return service<SpELHelperOptionsManager>().validateOption(value)
     }
 
-    override fun getReference(p0: PsiDocTagValue?): PsiReference? {
+    override fun getReference(value: PsiDocTagValue?): PsiReference? {
         return null
     }
 

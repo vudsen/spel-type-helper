@@ -5,6 +5,7 @@ import com.intellij.javaee.el.util.ELImplicitVariable
 import com.intellij.psi.*
 import io.github.vudsen.spelth.options.SpELTypeHelperOption
 import io.github.vudsen.spelth.options.VariableResolveContext
+import org.jetbrains.plugins.groovy.intentions.style.inference.resolve
 import org.jetbrains.plugins.groovy.lang.resolve.processors.inference.type
 import javax.swing.Icon
 
@@ -40,10 +41,26 @@ class DefineVariableOption : SpELTypeHelperOption {
     }
 
     override fun resolveContextVariables(args: List<String>, context: VariableResolveContext): List<PsiVariable> {
-        JavaPsiFacade.getInstance(context.annotationMethod.project).findClass(args[1], context.annotationMethod.resolveScope) ?.let {
-            val type = it.type()
-            return mutableListOf(DefVariable(context.annotation.containingFile, args[0], type, it.containingFile))
+        val factory = JavaPsiFacade.getElementFactory(context.annotationMethod.project)
+        val type = factory.createTypeFromText(args[1], null)
+
+        return mutableListOf(DefVariable(context.annotation.containingFile, args[0], type, type.resolve()?.containingFile ?: return emptyList()))
+    }
+
+    override fun parseArgument(raw: String): List<String> {
+        val result = mutableListOf<String>()
+        val builder = StringBuilder()
+        var waitingFirstVariable = true
+        for (ch in raw) {
+            if (ch == ' ' && waitingFirstVariable) {
+                result.add(builder.toString())
+                builder.clear()
+                waitingFirstVariable = false
+                continue
+            }
+            builder.append(ch)
         }
-        return emptyList()
+        result.add(builder.toString())
+        return result
     }
 }
